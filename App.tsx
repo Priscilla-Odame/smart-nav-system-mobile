@@ -1,11 +1,11 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import ImageUploader from './components/ImageUploader';
+import LiveFeed from './components/ImageUploader';
 
 export default function App() {
   return (
     <SafeAreaView style={styles.container}>
-      <ImageUploader />
+      <LiveFeed />
     </SafeAreaView>
   );
 }
