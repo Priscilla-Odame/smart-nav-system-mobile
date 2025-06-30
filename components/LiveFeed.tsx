@@ -43,7 +43,7 @@ export default function LiveFeed() {
       const base64Img = photo.base64;
 
       try {
-        const response = await fetch('http://192.168.178.29:8000/detect', {
+        const response = await fetch('http://backend-url:8000/detect', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
