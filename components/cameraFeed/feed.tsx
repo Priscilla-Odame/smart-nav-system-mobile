@@ -3,11 +3,11 @@ import { CameraView, useCameraPermissions } from "expo-camera";
 import * as Localization from "expo-localization";
 import * as Speech from "expo-speech";
 import { I18n } from "i18n-js";
-import React, { useEffect, useRef } from "react";
-import { Button, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Button, Text, TouchableOpacity, View } from "react-native";
 
 import axios from "axios";
-import { screenHeight } from "../../style.constants";
+import { screenHeight, screenWidth } from "../../style.constants";
 
 // Translations
 // const en = {
@@ -37,7 +37,10 @@ i18n.locale = preferredLocale;
 i18n.enableFallback = true;
 // i18n.translations = { en, de };
 
-export default function CameraCompnent() {
+export default function CameraCompnent({
+  currentLanguage,
+  setCurrentLanguage,
+}: any) {
   //component states
   const [hasCameraPermission, requestPermission] = useCameraPermissions();
   // const cameraRef = useRef(null);
@@ -105,7 +108,7 @@ export default function CameraCompnent() {
               .join(" ");
 
             Speech.speak(directions, {
-              language: "en",
+              language: currentLanguage ?? "de",
               pitch: 1.0,
               rate: 0.95,
             });
@@ -115,7 +118,7 @@ export default function CameraCompnent() {
             Speech.speak(
               "There were no objects in your way. Keep walking ahead.",
               {
-                language: "en",
+                language: currentLanguage ?? "de",
                 pitch: 1.0,
                 rate: 0.95,
               }
@@ -134,15 +137,47 @@ export default function CameraCompnent() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View
+      style={{
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
+        gap: "2",
+      }}
+    >
       {hasCameraPermission?.granted ? (
         <CameraView
-          style={{ width: "100%", height: screenHeight / 2 }}
+          style={{ width: "100%", height: screenHeight * 0.4 }}
           ref={cameraRef}
         />
       ) : (
         <Button title="Grant Camera Permission" onPress={requestPermission} />
       )}
+      <TouchableOpacity
+        style={{
+          height: "auto",
+          width: screenWidth,
+          backgroundColor: "#800080",
+          paddingVertical: 10,
+          borderRadius: 25,
+        }}
+        onPress={() =>
+          setCurrentLanguage(currentLanguage === "en" ? "de" : "en")
+        }
+      >
+        <Text
+          style={{
+            color: "#fff",
+            fontSize: 14,
+            textAlign: "center",
+            textTransform: "capitalize",
+          }}
+        >
+          Tap to change current language: {currentLanguage}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
