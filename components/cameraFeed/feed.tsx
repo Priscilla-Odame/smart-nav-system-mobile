@@ -98,7 +98,7 @@ export default function CameraCompnent() {
           const speakDirections = () => {
             const directions = itemsDetected
               ?.map((detection: any, idx: number) => {
-                return `Number of items detected are: ${numberOfObjects}. Item ${
+                return `There were some obstacles detected in your path. Number of obstacles detected are: ${numberOfObjects}. Obstacle ${
                   idx + 1
                 }: ${detection}.`;
               })
