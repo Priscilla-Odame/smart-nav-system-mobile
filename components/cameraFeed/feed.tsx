@@ -8,6 +8,7 @@ import { Button, Text, TouchableOpacity, View } from "react-native";
 
 import axios from "axios";
 import { screenHeight, screenWidth } from "../../style.constants";
+import { BACKEND_URL } from "@env";
 
 // Translations
 // const en = {
@@ -82,7 +83,7 @@ export default function CameraCompnent({
         } as any);
 
         const response = await axios.post(
-          `http://192.168.0.177:8000/detect`,
+          `${BACKEND_URL}/detect`,
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
