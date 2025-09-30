@@ -44,6 +44,8 @@ export default function CameraCompnent({
 }: any) {
   //component states
   const [hasCameraPermission, requestPermission] = useCameraPermissions();
+  const [objectDetected, setObjectDetected] = useState<number>(0);
+  const [allObjectsDetected, setAllObjectsDetected] = useState<Array<any>>([]);
   // const cameraRef = useRef(null);
   const cameraRef = useRef<CameraView | null>(null);
   const detectionInterval = useRef<NodeJS.Timeout | null>(null);
@@ -54,7 +56,7 @@ export default function CameraCompnent({
     if (hasCameraPermission?.granted) {
       detectionInterval.current = setInterval(() => {
         startCameraDetection();
-      }, 50000);
+      }, 20000);
     }
 
     return () => {
@@ -96,22 +98,24 @@ export default function CameraCompnent({
         if (detectionResp) {
           let numberOfObjects = Number(detectionResp?.length);
           let itemsDetected = detectionResp?.map((_item: any) => _item.label);
-
+          setObjectDetected(numberOfObjects);
+          setAllObjectsDetected(itemsDetected);
           console.log("all detections", itemsDetected);
 
           const speakDirections = () => {
+            const words = `${numberOfObjects} obstacles were detected in your path` 
             const directions = itemsDetected
               ?.map((detection: any, idx: number) => {
-                return `There were some obstacles detected in your path. Number of obstacles detected are: ${numberOfObjects}. Obstacle ${
+                return `Obstacle ${
                   idx + 1
                 }: ${detection}.`;
               })
               .join(" ");
 
-            Speech.speak(directions, {
+            Speech.speak(`${words}.  ${directions}`, {
               language: currentLanguage ?? "de",
               pitch: 1.0,
-              rate: 0.95,
+              rate: 1.0,
             });
           };
 
@@ -165,7 +169,7 @@ export default function CameraCompnent({
           borderRadius: 25,
         }}
         onPress={() =>
-          setCurrentLanguage(currentLanguage === "en" ? "de" : "en")
+          setCurrentLanguage(currentLanguage === "de" ? "de" : "en")
         }
       >
         <Text
@@ -179,6 +183,27 @@ export default function CameraCompnent({
           Tap to change current language: {currentLanguage}
         </Text>
       </TouchableOpacity>
+        <Text
+          style={{
+            color: "#800080",
+            fontSize: 14,
+            textAlign: "center",
+            textTransform: "capitalize",
+          }}
+        >
+         {`${objectDetected} obtacles were detected in your path.`}
+        </Text>
+        {allObjectsDetected.map((object, index) => { return (<Text
+        key={index}
+          style={{
+            color: "#800080",
+            fontSize: 14,
+            textAlign: "center",
+            textTransform: "capitalize",
+          }}
+        >
+         {`Obstacle ${index + 1}: ${object}`}
+        </Text>)})}
     </View>
   );
 }

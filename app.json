@@ -16,8 +16,10 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "We need to access your camera to update your profile picture.",
-        "NSPhotoLibraryUsageDescription": "We need access to your photos to upload a profile picture."
-      }
+        "NSPhotoLibraryUsageDescription": "We need access to your photos to upload a profile picture.",
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "bundleIdentifier": "com.priscilla99.smartnavsystemmobile"
     },
     "android": {
       "adaptiveIcon": {
@@ -25,10 +27,12 @@
         "backgroundColor": "#ffffff"
       },
       "permissions": [
-        "CAMERA",
-        "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE"
-      ]
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.priscilla99.smartnavsystemmobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -36,6 +40,11 @@
     "plugins": [
       "expo-image-picker",
       "expo-localization"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "67def089-936f-4118-bd46-e98d6867549d"
+      }
+    }
   }
 }
